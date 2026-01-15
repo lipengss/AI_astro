@@ -17,7 +17,7 @@
 
 :root {
   --bg-color: #161616;
-  --card-bg: #2c2c2c;
+  --card-bg: rgba(10,22,40,0.8);
   --text-main: #ffffff;
   --text-sub: #8a8a8a;
   --accent-green: #27f583;

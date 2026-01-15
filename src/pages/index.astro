@@ -17,7 +17,7 @@ import { tools, types } from "../data/tools.js";
     <div class="relative w-full max-w-[600px]">
       <input
         type="text"
-        class="w-full h-14 rounded-full border border-[#3d3d3d] bg-[var(--card-bg)] px-6 pr-12 text-[16px] text-[var(--text-main)] outline-none transition-colors focus:border-[var(--accent-green)] max-sm:h-12 max-sm:text-[15px]"
+        class="w-full h-14 rounded-full border border-[rgba(10,22,40,1)] bg-[var(--card-bg)] px-6 pr-12 text-[16px] text-[var(--text-main)] outline-none transition-colors focus:border-[var(--accent-green)] max-sm:h-12 max-sm:text-[15px]"
         placeholder="搜索工具，例如：Midjourney, ChatGPT..."
       />
       <i
@@ -104,16 +104,16 @@ import { tools, types } from "../data/tools.js";
               code: "filter-btn-code",
               "3d": "filter-btn-3d",
             };
-            const cls = map[type];
+            const cls = map[type as keyof typeof map];
             if (cls) btn.classList.add(cls);
           }
 
           cards.forEach((card) => {
             const category = card.getAttribute("data-category");
             if (!type || type === 'all' || category === type) {
-              card.style.display = "flex";
+              (card as HTMLElement).style.display = "flex";
             } else {
-              card.style.display = "none";
+              (card as HTMLElement).style.display = "none";
               card.classList.remove("card-selected");
             }
           });
