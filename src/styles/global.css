@@ -131,6 +131,7 @@
   }
 
   .filter-btn-active,
+  .filter-btn[data-type="all"]:hover,
   .filter-btn:not([data-type]):hover {
     background-color: var(--text-main);
     color: #000000;

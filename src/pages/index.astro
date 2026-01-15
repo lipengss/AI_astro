@@ -93,7 +93,7 @@ import { tools, types } from "../data/tools.js";
           resetButtonStyles();
           const type = btn.getAttribute("data-type");
 
-          if (!type) {
+          if (!type || type === 'all') {
             btn.classList.add("filter-btn-active");
           } else {
             const map = {
@@ -104,16 +104,16 @@ import { tools, types } from "../data/tools.js";
               code: "filter-btn-code",
               "3d": "filter-btn-3d",
             };
-            const cls = map[type as keyof typeof map];
+            const cls = map[type];
             if (cls) btn.classList.add(cls);
           }
 
           cards.forEach((card) => {
             const category = card.getAttribute("data-category");
-            if (!type || category === type) {
-              (card as HTMLElement).style.display = "flex";
+            if (!type || type === 'all' || category === type) {
+              card.style.display = "flex";
             } else {
-              (card as HTMLElement).style.display = "none";
+              card.style.display = "none";
               card.classList.remove("card-selected");
             }
           });
