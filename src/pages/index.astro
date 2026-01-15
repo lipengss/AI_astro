@@ -1,11 +1,379 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const tools = [
+  {
+    name: "Midjourney",
+    tag: "图像生成",
+    tagClass: "tag-green",
+    category: "image",
+    desc: "艺术风格图像生成领域的领导者，擅长创意概念设计、插画绘制和超现实艺术作品创作。",
+    iconClass: "icon-midjourney",
+    iconType: "icon", // icon or text
+    iconContent: "ri-sailboat-fill",
+    features: [
+      { icon: "ri-palette-line", title: "Artistic" },
+      { icon: "ri-magic-line", title: "Creative" },
+      { icon: "ri-discord-line", title: "Discord Based" }
+    ]
+  },
+  {
+    name: "ChatGPT",
+    tag: "文本处理",
+    tagClass: "tag-blue",
+    category: "text",
+    desc: "由 OpenAI 开发的革命性智能对话助手，能够进行复杂的文本生成、代码编写和逻辑问答。",
+    iconClass: "icon-chatgpt",
+    iconType: "icon",
+    iconContent: "ri-openai-fill",
+    features: [
+      { icon: "ri-chat-1-line" },
+      { icon: "ri-code-s-slash-line" },
+      { icon: "ri-translate-2" }
+    ]
+  },
+  {
+    name: "Stable Diffusion",
+    tag: "图像生成",
+    tagClass: "tag-green",
+    category: "image",
+    desc: "开源图像生成模型的代表，支持本地部署，拥有极高的可定制性和庞大的模型生态社区。",
+    iconClass: "icon-stable",
+    iconType: "icon",
+    iconContent: "ri-image-edit-line",
+    features: [
+      { icon: "ri-open-source-line" },
+      { icon: "ri-cpu-line" },
+      { icon: "ri-brush-line" }
+    ]
+  },
+  {
+    name: "Runway Gen-2",
+    tag: "视频生成",
+    tagClass: "tag-purple",
+    category: "video",
+    desc: "专业的 AI 视频编辑与生成工具，支持文本生成视频、视频风格化转换，不仅是生成工具更是创意套件。",
+    iconClass: "icon-runway",
+    iconType: "text",
+    iconContent: "R",
+    iconStyle: "font-weight:900; font-family:sans-serif;",
+    features: [
+      { icon: "ri-movie-line" },
+      { icon: "ri-edit-line" },
+      { icon: "ri-clapperboard-line" }
+    ]
+  },
+  {
+    name: "ElevenLabs",
+    tag: "音频处理",
+    tagClass: "tag-pink",
+    category: "audio",
+    desc: "提供惊人逼真度的 AI 语音合成与声音克隆服务，支持多语言情感表达，适用于内容创作。",
+    iconClass: "icon-eleven",
+    iconType: "text",
+    iconContent: "II",
+    iconStyle: "font-size: 16px;",
+    features: [
+      { icon: "ri-mic-line" },
+      { icon: "ri-sound-module-line" },
+      { icon: "ri-global-line" }
+    ]
+  },
+  {
+    name: "GitHub Copilot",
+    tag: "代码助手",
+    tagClass: "tag-orange",
+    category: "code",
+    desc: "你的 AI 结对编程助手，基于 OpenAI Codex，能够实时提供代码建议、自动补全和函数生成。",
+    iconClass: "icon-github",
+    iconType: "icon",
+    iconContent: "ri-github-fill",
+    features: [
+      { icon: "ri-code-box-line" },
+      { icon: "ri-terminal-box-line" },
+      { icon: "ri-lightbulb-line" }
+    ]
+  },
+  {
+    name: "Sora",
+    tag: "视频生成",
+    tagClass: "tag-purple",
+    category: "video",
+    desc: "OpenAI 最新推出的文本到视频生成模型，能够生成长达一分钟的高质量、连贯且符合物理规律的视频。",
+    iconClass: "icon-sora",
+    iconType: "icon",
+    iconContent: "ri-vidicon-line",
+    features: [
+      { icon: "ri-film-line" },
+      { icon: "ri-hd-line" },
+      { icon: "ri-landscape-line" }
+    ]
+  },
+  {
+    name: "DALL-E 3",
+    tag: "图像生成",
+    tagClass: "tag-green",
+    category: "image",
+    desc: "OpenAI 的图像生成模型，能精准理解复杂的自然语言提示词，并将其转化为精美的视觉图像。",
+    iconClass: "icon-dalle",
+    iconType: "text",
+    iconContent: "D",
+    iconStyle: "font-weight: bold; font-family: serif;",
+    features: [
+      { icon: "ri-gallery-line" },
+      { icon: "ri-text-spacing" },
+      { icon: "ri-robot-line" }
+    ]
+  },
+  {
+    name: "Claude 3",
+    tag: "文本处理",
+    tagClass: "tag-blue",
+    category: "text",
+    desc: "Anthropic 开发的先进 AI 模型，以长上下文窗口和高安全性著称，擅长复杂推理和写作。",
+    iconClass: "icon-claude",
+    iconType: "icon",
+    iconContent: "ri-brain-line",
+    features: [
+      { icon: "ri-file-text-line" },
+      { icon: "ri-shield-check-line" },
+      { icon: "ri-book-read-line" }
+    ]
+  },
+  {
+    name: "Suno",
+    tag: "音频处理",
+    tagClass: "tag-pink",
+    category: "audio",
+    desc: "能够创作广播级歌曲的 AI 音乐生成器，支持生成包含人声和配乐的完整音乐作品。",
+    iconClass: "icon-suno",
+    iconType: "icon",
+    iconContent: "ri-music-2-fill",
+    features: [
+      { icon: "ri-music-line" },
+      { icon: "ri-mic-2-line" },
+      { icon: "ri-disc-line" }
+    ]
+  },
+  {
+    name: "Luma Dream",
+    tag: "视频生成",
+    tagClass: "tag-purple",
+    category: "video",
+    desc: "新一代高质量视频生成模型，速度快，支持由图生视频，物理模拟效果逼真。",
+    iconClass: "icon-luma",
+    iconType: "icon",
+    iconContent: "ri-video-add-line",
+    features: [
+      { icon: "ri-speed-line" },
+      { icon: "ri-camera-lens-line" },
+      { icon: "ri-movie-2-line" }
+    ]
+  },
+  {
+    name: "Notion AI",
+    tag: "文本处理",
+    tagClass: "tag-blue",
+    category: "text",
+    desc: "集成在 Notion 笔记中的 AI 助手，帮助用户写作、整理总结和提取信息，提升工作效率。",
+    iconClass: "icon-notion",
+    iconType: "text",
+    iconContent: "N",
+    iconStyle: "font-weight: bold; font-family: serif;",
+    features: [
+      { icon: "ri-pages-line" },
+      { icon: "ri-quill-pen-line" },
+      { icon: "ri-magic-line" }
+    ]
+  }
+];
 ---
 
 <Layout>
-	<Welcome />
+    <div class="hero">
+        <h1>发现最前沿的 AI 工具</h1>
+        <p>精选分类，一目了然，赋能您的创意与工作</p>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="搜索工具，例如：Midjourney, ChatGPT...">
+            <i class="ri-search-line search-btn"></i>
+        </div>
+    </div>
+
+    <section class="filters">
+        <button class="filter-btn active">全部</button>
+        <button class="filter-btn" data-type="image">图像生成</button>
+        <button class="filter-btn" data-type="video">视频生成</button>
+        <button class="filter-btn" data-type="text">文本处理</button>
+        <button class="filter-btn" data-type="audio">音频处理</button>
+        <button class="filter-btn" data-type="code">代码助手</button>
+        <button class="filter-btn" data-type="3d">3D建模</button>
+    </section>
+
+    <main class="grid-container">
+        {tools.map(tool => (
+            <Card
+                name={tool.name}
+                tag={tool.tag}
+                tagClass={tool.tagClass}
+                desc={tool.desc}
+                iconClass={tool.iconClass}
+                features={tool.features}
+                category={tool.category}
+            >
+                <div slot="icon">
+                    {tool.iconType === 'icon' ? (
+                        <i class={tool.iconContent}></i>
+                    ) : (
+                        <span style={tool.iconStyle}>{tool.iconContent}</span>
+                    )}
+                </div>
+            </Card>
+        ))}
+    </main>
 </Layout>
+
+<style>
+    .hero {
+        padding-top: 140px;
+        padding-bottom: 60px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero h1 {
+        font-family: 'MiSans-Bold';
+        font-size: 56px;
+        margin-bottom: 16px;
+        letter-spacing: -1px;
+    }
+
+    .hero p {
+        color: var(--text-sub);
+        font-size: 18px;
+        margin-bottom: 40px;
+    }
+
+    .search-container {
+        position: relative;
+        width: 600px;
+    }
+
+    .search-input {
+        width: 100%;
+        height: 56px;
+        background: var(--card-bg);
+        border: 1px solid #3d3d3d;
+        border-radius: 28px;
+        padding: 0 60px 0 24px;
+        color: var(--text-main);
+        font-size: 16px;
+        font-family: 'MiSans-Regular';
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    .search-input:focus {
+        border-color: var(--accent-green);
+    }
+
+    .search-btn {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-sub);
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    /* Filters */
+    .filters {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 60px;
+    }
+
+    .filter-btn {
+        padding: 10px 24px;
+        border-radius: 20px;
+        border: 1px solid #3d3d3d;
+        background: transparent;
+        color: #e6e6e6;
+        cursor: pointer;
+        font-family: 'MiSans-Medium';
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .filter-btn.active {
+        background: var(--text-main);
+        color: #000;
+        border-color: var(--text-main);
+    }
+
+    .filter-btn:hover:not(.active) {
+        border-color: #666;
+        background: #333;
+    }
+    
+    .filter-btn[data-type="image"]:hover { border-color: var(--accent-green); color: var(--accent-green); }
+    .filter-btn[data-type="text"]:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+    .filter-btn[data-type="video"]:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
+    .filter-btn[data-type="audio"]:hover { border-color: var(--accent-pink); color: var(--accent-pink); }
+    .filter-btn[data-type="code"]:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
+
+    /* Grid */
+    .grid-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        padding-bottom: 100px;
+    }
+
+    /* Tool Icon Styles */
+    :global(.icon-midjourney) { background: linear-gradient(135deg, #2c3e50, #000000); border: 1px solid #555; }
+    :global(.icon-chatgpt) { background: #74aa9c; }
+    :global(.icon-stable) { background: linear-gradient(135deg, #662d8c, #ed1e79); }
+    :global(.icon-runway) { background: #000; border: 1px solid #333; }
+    :global(.icon-eleven) { background: #000; border: 1px solid #555; }
+    :global(.icon-github) { background: #171515; border: 1px solid #333; }
+    :global(.icon-sora) { background: #000; border: 1px solid #555; }
+    :global(.icon-dalle) { background: linear-gradient(135deg, #ffff00, #ff0000); color: #000 !important; }
+    :global(.icon-claude) { background: #d97757; color: white; }
+    :global(.icon-suno) { background: #000; border: 1px solid #555; }
+    :global(.icon-luma) { background: linear-gradient(45deg, #11ffbd, #aaffa9); color: #000; }
+    :global(.icon-notion) { background: #fff; color: #000; }
+</style>
+
+<script>
+	if (typeof window !== "undefined") {
+		window.addEventListener("DOMContentLoaded", () => {
+			const filterBtns = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+			const cards = document.querySelectorAll<HTMLDivElement>(".card");
+
+			filterBtns.forEach((btn) => {
+				btn.addEventListener("click", () => {
+					filterBtns.forEach((b) => b.classList.remove("active"));
+					btn.classList.add("active");
+
+					const type = btn.getAttribute("data-type");
+
+					cards.forEach((card) => {
+						const cardElement = card as HTMLDivElement;
+						if (!type || cardElement.getAttribute("data-category") === type) {
+							cardElement.style.display = "flex";
+						} else {
+							cardElement.style.display = "none";
+						}
+					});
+				});
+			});
+		});
+	}
+</script>
