@@ -1,5 +1,6 @@
 ---
 import Header from '../components/Header.astro'
+import '../styles/global.css'
 ---
 
 <!doctype html>
@@ -12,56 +13,12 @@ import Header from '../components/Header.astro'
 		<title>AI Hub - Discover Top AI Tools</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
 	</head>
-	<body>
-		<Header />
-		<slot />
+	<body class="m-0 box-border flex min-h-screen w-full flex-col overflow-x-hidden text-[var(--text-main)] font-[MiSans-Regular]">
+		<div class="mx-auto flex w-full max-w-[1920px] flex-1 flex-col">
+			<Header />
+			<main class="mt-[60px] flex-1">
+				<slot />
+			</main>
+		</div>
 	</body>
 </html>
-
-<style is:global>
-	@font-face {
-		font-family: 'MiSans-Regular';
-		src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Regular.ttf');
-	}
-	@font-face {
-		font-family: 'MiSans-Bold';
-		src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Bold.ttf');
-	}
-	@font-face {
-		font-family: 'MiSans-Medium';
-		src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Medium.ttf');
-	}
-
-	:root {
-		--bg-color: #161616;
-		--card-bg: #2c2c2c;
-		--text-main: #ffffff;
-		--text-sub: #8a8a8a;
-		--accent-green: #27f583;
-		--accent-blue: #27a7f5;
-		--accent-purple: #a267f5;
-		--accent-pink: #f527a7;
-		--accent-orange: #f5a227;
-	}
-
-	* {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
-
-	html,
-	body {
-		margin: 0;
-		padding: 0;
-		background-color: var(--bg-color);
-		color: var(--text-main);
-		font-family: 'MiSans-Regular', sans-serif;
-	}
-
-	body {
-		width: 1920px;
-		overflow-x: hidden;
-		margin: 0 auto;
-	}
-</style>

@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "MiSans-Regular";
+  src: url("https://assets-persist.lovart.ai/agent-static-assets/MiSans-Regular.ttf");
+}
+
+@font-face {
+  font-family: "MiSans-Bold";
+  src: url("https://assets-persist.lovart.ai/agent-static-assets/MiSans-Bold.ttf");
+}
+
+@font-face {
+  font-family: "MiSans-Medium";
+  src: url("https://assets-persist.lovart.ai/agent-static-assets/MiSans-Medium.ttf");
+}
+
+:root {
+  --bg-color: #161616;
+  --card-bg: #2c2c2c;
+  --text-main: #ffffff;
+  --text-sub: #8a8a8a;
+  --accent-green: #27f583;
+  --accent-blue: #27a7f5;
+  --accent-purple: #a267f5;
+  --accent-pink: #f527a7;
+  --accent-orange: #f5a227;
+  --gradient-bg:
+    radial-gradient(1000px circle at 12% 18%, rgba(39, 245, 131, 0.12), transparent 60%),
+    radial-gradient(900px circle at 86% 28%, rgba(39, 167, 245, 0.12), transparent 60%),
+    radial-gradient(900px circle at 70% 78%, rgba(162, 103, 245, 0.12), transparent 60%),
+    radial-gradient(800px circle at 24% 86%, rgba(245, 39, 167, 0.10), transparent 60%),
+    linear-gradient(135deg, #0a1628 0%, #1e293b 25%, #2d3748 50%, #0d1a26 75%, #000000 100%);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: "MiSans-Regular", sans-serif;
+    background: var(--gradient-bg);
+  }
+}
+
+@layer utilities {
+  .tag-green {
+    background-color: rgba(39, 245, 131, 0.15);
+    color: var(--accent-green);
+  }
+
+  .tag-blue {
+    background-color: rgba(39, 167, 245, 0.15);
+    color: var(--accent-blue);
+  }
+
+  .tag-purple {
+    background-color: rgba(162, 103, 245, 0.15);
+    color: var(--accent-purple);
+  }
+
+  .tag-pink {
+    background-color: rgba(245, 39, 167, 0.15);
+    color: var(--accent-pink);
+  }
+
+  .tag-orange {
+    background-color: rgba(245, 162, 39, 0.15);
+    color: var(--accent-orange);
+  }
+
+  .icon-midjourney {
+    background: linear-gradient(135deg, #2c3e50, #000000);
+    border: 1px solid #555555;
+  }
+
+  .icon-chatgpt {
+    background: #74aa9c;
+  }
+
+  .icon-stable {
+    background: linear-gradient(135deg, #662d8c, #ed1e79);
+  }
+
+  .icon-runway {
+    background: #000000;
+    border: 1px solid #333333;
+  }
+
+  .icon-eleven {
+    background: #000000;
+    border: 1px solid #555555;
+  }
+
+  .icon-github {
+    background: #171515;
+    border: 1px solid #333333;
+  }
+
+  .icon-sora {
+    background: #000000;
+    border: 1px solid #555555;
+  }
+
+  .icon-dalle {
+    background: linear-gradient(135deg, #ffff00, #ff0000);
+    color: #000000;
+  }
+
+  .icon-claude {
+    background: #d97757;
+    color: #ffffff;
+  }
+
+  .icon-suno {
+    background: #000000;
+    border: 1px solid #555555;
+  }
+
+  .icon-luma {
+    background: linear-gradient(45deg, #11ffbd, #aaffa9);
+    color: #000000;
+  }
+
+  .icon-notion {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .filter-btn-active,
+  .filter-btn:not([data-type]):hover {
+    background-color: var(--text-main);
+    color: #000000;
+    border-color: var(--text-main);
+  }
+
+  .filter-btn-image,
+  .filter-btn[data-type="image"]:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
+
+  .filter-btn-text,
+  .filter-btn[data-type="text"]:hover {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+  }
+
+  .filter-btn-video,
+  .filter-btn[data-type="video"]:hover {
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+  }
+
+  .filter-btn-audio,
+  .filter-btn[data-type="audio"]:hover {
+    border-color: var(--accent-pink);
+    color: var(--accent-pink);
+  }
+
+  .filter-btn-code,
+  .filter-btn[data-type="code"]:hover {
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+  }
+
+  .filter-btn-3d,
+  .filter-btn[data-type="3d"]:hover {
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card:hover::before {
+    opacity: 1;
+  }
+  .card.card-selected::before {
+    opacity: 1;
+  }
+  .card.card-selected {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: #3d3d3d;
+  }
+}

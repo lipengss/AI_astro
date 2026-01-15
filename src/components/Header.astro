@@ -1,77 +1,100 @@
-<nav>
-    <div class="logo">
-        <i class="ri-robot-2-fill"></i>
-        AI Hub
-    </div>
-    <div class="nav-links">
-        <a href="#" class="active">工具库</a>
-        <a href="#">分类</a>
-        <a href="#">社区</a>
-        <a href="#">关于</a>
-    </div>
-    <div class="nav-actions">
-        <i class="ri-search-line"></i>
-        <i class="ri-notification-3-line"></i>
-        <i class="ri-user-smile-line"></i>
-    </div>
+---
+const { pathname } = Astro.url;
+---
+
+<nav class="fixed top-0 z-[1000] h-[60px] w-full border-b border-[#2a2a2a] bg-[rgba(10,22,40,0.8)] backdrop-blur">
+	<div class="nav-inner mx-auto flex h-full w-full max-w-[1200px] items-center justify-between px-[60px] max-md:px-4">
+		<div class="logo flex items-center gap-2 text-[24px] font-[MiSans-Bold] text-[var(--text-main)]">
+			<i class="ri-robot-2-fill text-[var(--accent-green)]"></i>
+			AI Hub
+		</div>
+		<button class="menu-toggle ml-auto mr-3 hidden items-center justify-center text-[22px] text-[#e6e6e6] max-md:inline-flex" aria-label="Toggle navigation">
+			<i class="ri-menu-line"></i>
+		</button>
+		<div class="nav-links flex gap-10 text-[16px] font-[MiSans-Medium] text-[#e6e6e6] max-md:hidden">
+			<a href="/" class={pathname === "/" 
+				? "relative inline-block pb-1 text-[var(--accent-green)] transition-colors after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-[-6px] after:h-[2px] after:w-6 after:bg-[var(--accent-green)] after:rounded-full" 
+				: "relative inline-block pb-1 transition-colors hover:text-[var(--text-main)]"
+			}>工具库</a>
+			<a href="/category" class={pathname === "/category" 
+				? "relative inline-block pb-1 text-[var(--accent-green)] transition-colors after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-[-6px] after:h-[2px] after:w-6 after:bg-[var(--accent-green)] after:rounded-full" 
+				: "relative inline-block pb-1 transition-colors hover:text-[var(--text-main)]"
+			}>分类</a>
+			<a href="/community" class={pathname === "/community" 
+				? "relative inline-block pb-1 text-[var(--accent-green)] transition-colors after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-[-6px] after:h-[2px] after:w-6 after:bg-[var(--accent-green)] after:rounded-full" 
+				: "relative inline-block pb-1 transition-colors hover:text-[var(--text-main)]"
+			}>社区</a>
+			<a href="/about" class={pathname === "/about" 
+				? "relative inline-block pb-1 text-[var(--accent-green)] transition-colors after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-[-6px] after:h-[2px] after:w-6 after:bg-[var(--accent-green)] after:rounded-full" 
+				: "relative inline-block pb-1 transition-colors hover:text-[var(--text-main)]"
+			}>关于</a>
+		</div>
+		<div class="nav-actions flex gap-6 text-[20px] text-[#e6e6e6] max-md:gap-4">
+			<i class="ri-search-line cursor-pointer transition-colors hover:text-[var(--accent-green)]"></i>
+			<i class="ri-notification-3-line cursor-pointer transition-colors hover:text-[var(--accent-green)]"></i>
+			<i class="ri-user-smile-line cursor-pointer transition-colors hover:text-[var(--accent-green)]"></i>
+		</div>
+	</div>
+	<div class="mobile-nav fixed left-0 right-0 top-[60px] z-[1001] flex-col gap-4 border-b border-[#2a2a2a] bg-[#161616]/98 px-4 pb-4 pt-3 text-[16px] font-[MiSans-Medium] text-[#e6e6e6] hidden max-md:flex max-md:opacity-0 max-md:pointer-events-none max-md:-translate-y-2 max-md:transition-all max-md:duration-200">
+		<a href="/" class={pathname === "/" ? "text-[var(--accent-green)]" : "hover:text-[var(--text-main)]"}>工具库</a>
+		<a href="/category" class={pathname === "/category" ? "text-[var(--accent-green)]" : "hover:text-[var(--text-main)]"}>分类</a>
+		<a href="/community" class={pathname === "/community" ? "text-[var(--accent-green)]" : "hover:text-[var(--text-main)]"}>社区</a>
+		<a href="/about" class={pathname === "/about" ? "text-[var(--accent-green)]" : "hover:text-[var(--text-main)]"}>关于</a>
+	</div>
+	<div class="nav-mask fixed left-0 right-0 top-[60px] bottom-0 z-[1000] bg-black/40 opacity-0 pointer-events-none transition-opacity duration-200"></div>
 </nav>
 
-<style>
-    nav {
-        height: 60px;
-        width: 100%;
-        background: rgba(22, 22, 22, 0.95);
-        backdrop-filter: blur(10px);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 60px;
-        position: fixed;
-        top: 0;
-        z-index: 1000;
-        border-bottom: 1px solid #2a2a2a;
-    }
-
-    .logo {
-        font-family: 'MiSans-Bold';
-        font-size: 24px;
-        color: var(--text-main);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .logo i {
-        color: var(--accent-green);
-    }
-
-    .nav-links {
-        display: flex;
-        gap: 40px;
-    }
-
-    .nav-links a {
-        text-decoration: none;
-        color: #e6e6e6;
-        font-size: 16px;
-        font-family: 'MiSans-Medium';
-        transition: color 0.3s;
-    }
-
-    .nav-links a:hover, .nav-links a.active {
-        color: var(--text-main);
-    }
-
-    .nav-actions {
-        display: flex;
-        gap: 24px;
-        color: #e6e6e6;
-        font-size: 20px;
-    }
-    .nav-actions i {
-        cursor: pointer;
-        transition: color 0.3s;
-    }
-    .nav-actions i:hover {
-        color: var(--accent-green);
-    }
-</style>
+<script>
+	if (typeof window !== "undefined") {
+		const toggle = document.querySelector(".menu-toggle");
+		const mobileNav = document.querySelector(".mobile-nav");
+		const mask = document.querySelector(".nav-mask");
+		if (toggle && mobileNav) {
+			toggle.addEventListener("click", () => {
+				mobileNav.classList.toggle("max-md:opacity-0");
+				mobileNav.classList.toggle("max-md:pointer-events-none");
+				mobileNav.classList.toggle("max-md:-translate-y-2");
+				mobileNav.classList.toggle("max-md:opacity-100");
+				mobileNav.classList.toggle("max-md:pointer-events-auto");
+				mobileNav.classList.toggle("max-md:translate-y-0");
+				if (mask) {
+					mask.classList.toggle("opacity-0");
+					mask.classList.toggle("pointer-events-none");
+					mask.classList.toggle("opacity-100");
+					mask.classList.toggle("pointer-events-auto");
+				}
+			});
+			mobileNav.addEventListener("click", (e) => {
+				const target = e.target;
+				if (target && target instanceof HTMLAnchorElement) {
+					mobileNav.classList.add("max-md:opacity-0");
+					mobileNav.classList.add("max-md:pointer-events-none");
+					mobileNav.classList.add("max-md:-translate-y-2");
+					mobileNav.classList.remove("max-md:opacity-100");
+					mobileNav.classList.remove("max-md:pointer-events-auto");
+					mobileNav.classList.remove("max-md:translate-y-0");
+					if (mask) {
+						mask.classList.add("opacity-0");
+						mask.classList.add("pointer-events-none");
+						mask.classList.remove("opacity-100");
+						mask.classList.remove("pointer-events-auto");
+					}
+				}
+			});
+		}
+		if (mask && mobileNav) {
+			mask.addEventListener("click", () => {
+				mobileNav.classList.add("max-md:opacity-0");
+				mobileNav.classList.add("max-md:pointer-events-none");
+				mobileNav.classList.add("max-md:-translate-y-2");
+				mobileNav.classList.remove("max-md:opacity-100");
+				mobileNav.classList.remove("max-md:pointer-events-auto");
+				mobileNav.classList.remove("max-md:translate-y-0");
+				mask.classList.add("opacity-0");
+				mask.classList.add("pointer-events-none");
+				mask.classList.remove("opacity-100");
+				mask.classList.remove("pointer-events-auto");
+			});
+		}
+	}
+</script>
