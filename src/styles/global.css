@@ -1,23 +1,23 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @font-face {
-  font-family: "MiSans-Regular";
-  src: url("https://assets-persist.lovart.ai/agent-static-assets/MiSans-Regular.ttf");
+  font-family: 'MiSans-Regular';
+  src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Regular.ttf');
 }
 
 @font-face {
-  font-family: "MiSans-Bold";
-  src: url("https://assets-persist.lovart.ai/agent-static-assets/MiSans-Bold.ttf");
+  font-family: 'MiSans-Bold';
+  src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Bold.ttf');
 }
 
 @font-face {
-  font-family: "MiSans-Medium";
-  src: url("https://assets-persist.lovart.ai/agent-static-assets/MiSans-Medium.ttf");
+  font-family: 'MiSans-Medium';
+  src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Medium.ttf');
 }
 
 :root {
   --bg-color: #161616;
-  --card-bg: rgba(10,22,40,0.8);
+  --card-bg: rgba(10, 22, 40, 0.8);
   --text-main: #ffffff;
   --text-sub: #8a8a8a;
   --accent-green: #27f583;
@@ -29,7 +29,7 @@
     radial-gradient(1000px circle at 12% 18%, rgba(39, 245, 131, 0.12), transparent 60%),
     radial-gradient(900px circle at 86% 28%, rgba(39, 167, 245, 0.12), transparent 60%),
     radial-gradient(900px circle at 70% 78%, rgba(162, 103, 245, 0.12), transparent 60%),
-    radial-gradient(800px circle at 24% 86%, rgba(245, 39, 167, 0.10), transparent 60%),
+    radial-gradient(800px circle at 24% 86%, rgba(245, 39, 167, 0.1), transparent 60%),
     linear-gradient(135deg, #0a1628 0%, #1e293b 25%, #2d3748 50%, #0d1a26 75%, #000000 100%);
 }
 
@@ -41,7 +41,7 @@
   body {
     background-color: var(--bg-color);
     color: var(--text-main);
-    font-family: "MiSans-Regular", sans-serif;
+    font-family: 'MiSans-Regular', sans-serif;
     background: var(--gradient-bg);
   }
 }
@@ -130,52 +130,44 @@
     color: #000000;
   }
 
-  .filter-btn-active,
-  .filter-btn[data-type="all"]:hover,
+  .filter-btn-anyway,
+  .filter-btn[data-type='anyway']:hover,
   .filter-btn:not([data-type]):hover {
-    background-color: var(--text-main);
-    color: #000000;
-    border-color: var(--text-main);
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
   }
 
   .filter-btn-image,
-  .filter-btn[data-type="image"]:hover {
+  .filter-btn[data-type='image']:hover {
     border-color: var(--accent-green);
     color: var(--accent-green);
   }
 
   .filter-btn-text,
-  .filter-btn[data-type="text"]:hover {
+  .filter-btn[data-type='text']:hover {
     border-color: var(--accent-blue);
     color: var(--accent-blue);
   }
 
   .filter-btn-video,
-  .filter-btn[data-type="video"]:hover {
+  .filter-btn[data-type='video']:hover {
     border-color: var(--accent-purple);
     color: var(--accent-purple);
   }
 
   .filter-btn-audio,
-  .filter-btn[data-type="audio"]:hover {
+  .filter-btn[data-type='audio']:hover {
     border-color: var(--accent-pink);
     color: var(--accent-pink);
   }
 
-  .filter-btn-code,
-  .filter-btn[data-type="code"]:hover {
+  .filter-btn-efficiency,
+  .filter-btn[data-type='efficiency']:hover {
     border-color: var(--accent-orange);
     color: var(--accent-orange);
   }
-
-  .filter-btn-3d,
-  .filter-btn[data-type="3d"]:hover {
-    border-color: var(--accent-purple);
-    color: var(--accent-purple);
-  }
-
   .card::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;

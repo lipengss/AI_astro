@@ -1,0 +1,135 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import { tools, types } from '../data/tools.js';
+import '@shoelace-style/shoelace/dist/themes/light.css';
+---
+
+<Layout>
+  <div class="pt-36 pb-16 flex flex-col items-center text-center md:pt-20">
+    <h1
+      class="font-[MiSans-Bold] text-[32px] leading-tight mb-4 tracking-tight sm:text-[40px] lg:text-[56px]"
+    >
+      用 AI，少干活，快出结果
+    </h1>
+    <p class="text-[16px] text-[var(--text-sub)] mb-2 sm:text-[18px]">
+      按你要做的事，直接找到最合适的 AI 工具
+    </p>
+  </div>
+  <section
+    class="filters mb-14 flex gap-4 overflow-x-auto -mx-3 px-3 pb-1
+    sm:mx-0 sm:overflow-visible sm:flex-wrap sm:justify-center sm:px-4 lg:px-0"
+  >
+    {
+      types.map((type) => (
+        <button
+          class={`filter-btn ${
+            type.category === 'anyway' ? 'filter-btn-active' : ''
+          } cursor-pointer rounded-full border border-[#3d3d3d] bg-transparent
+          px-4 py-2 text-[14px] font-[MiSans-Medium] text-[#e6e6e6]
+          transition-colors whitespace-nowrap`}
+          data-type={type.category}
+        >
+          <i class={type.icon} />
+          {type.name}
+        </button>
+      ))
+    }
+  </section>
+
+  <main
+    class="grid-container mx-auto grid max-w-[1400px] gap-6 pb-24
+    px-3 sm:px-4 md:px-6 lg:grid-cols-3 xl:grid-cols-4 sm:grid-cols-2"
+  >
+    {
+      tools.map((tool) => (
+        <Card
+          name={tool.name}
+          tag={tool.tag}
+          tagClass={tool.tagClass}
+          desc={tool.desc}
+          iconClass={tool.iconClass}
+          features={tool.features}
+          category={tool.category}
+        >
+          <div slot="icon">
+            {tool.iconType === 'icon' ? (
+              <i class={tool.iconContent} />
+            ) : (
+              <span style={tool.iconStyle}>{tool.iconContent}</span>
+            )}
+          </div>
+        </Card>
+      ))
+    }
+  </main>
+</Layout>
+
+<script>
+  import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
+  import '@shoelace-style/shoelace';
+
+  setBasePath('/shoelace-assets/');
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card');
+
+    const resetButtonStyles = () => {
+      filterBtns.forEach((b) => {
+        b.classList.remove('filter-btn-active');
+        b.classList.remove(
+          'filter-btn-image',
+          'filter-btn-text',
+          'filter-btn-video',
+          'filter-btn-audio',
+          'filter-btn-code',
+          'filter-btn-3d'
+        );
+      });
+    };
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        resetButtonStyles();
+        const type = btn.getAttribute('data-type');
+
+        if (!type || type === 'all') {
+          btn.classList.add('filter-btn-active');
+        } else {
+          const map = {
+            image: 'filter-btn-image',
+            text: 'filter-btn-text',
+            video: 'filter-btn-video',
+            audio: 'filter-btn-audio',
+            code: 'filter-btn-code',
+            '3d': 'filter-btn-3d',
+          };
+          const cls = map[type];
+          if (cls) btn.classList.add(cls);
+        }
+
+        cards.forEach((card) => {
+          const category = card.getAttribute('data-category');
+          if (!type || type === 'all' || category === type) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+            card.classList.remove('card-selected');
+          }
+        });
+      });
+    });
+
+    cards.forEach((card) => {
+      card.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target instanceof Element && target.closest('.visit-btn')) {
+          return;
+        }
+        cards.forEach((c) => c.classList.remove('card-selected'));
+        card.classList.add('card-selected');
+      });
+    });
+  });
+</script>

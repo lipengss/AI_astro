@@ -1,42 +1,47 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
-import { tools, types } from "../data/tools.js";
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import { tools, types } from '../data/tools.js';
+import '@shoelace-style/shoelace/dist/themes/light.css';
 ---
 
 <Layout>
-  <div class="pt-36 pb-16 flex flex-col items-center text-center md:pt-40">
+  <div class="pt-36 pb-16 flex flex-col items-center text-center md:pt-20">
     <h1
       class="font-[MiSans-Bold] text-[32px] leading-tight mb-4 tracking-tight sm:text-[40px] lg:text-[56px]"
     >
-      发现最前沿的 AI 工具
+      用 AI，少干活，快出结果
     </h1>
-    <p class="text-[16px] text-[var(--text-sub)] mb-10 sm:text-[18px]">
-      精选分类，一目了然，赋能您的创意与工作
+    <p class="text-[16px] text-[var(--text-sub)] mb-2 sm:text-[18px]">
+      按你要做的事，直接找到最合适的 AI 工具
     </p>
-    <div class="relative w-full max-w-[600px]">
-      <input
-        type="text"
-        class="w-full h-14 rounded-full border border-[rgba(10,22,40,1)] bg-[var(--card-bg)] px-6 pr-12 text-[16px] text-[var(--text-main)] outline-none transition-colors focus:border-[var(--accent-green)] max-sm:h-12 max-sm:text-[15px]"
-        placeholder="搜索工具，例如：Midjourney, ChatGPT..."
-      />
-      <i
-        class="ri-search-line absolute right-4 top-1/2 -translate-y-1/2 text-[20px] text-[var(--text-sub)] cursor-pointer"
-      ></i>
-    </div>
   </div>
-
   <section
-    class="filters mb-14 flex gap-4 overflow-x-auto -mx-3 px-3 pb-1 sm:mx-0 sm:overflow-visible sm:flex-wrap sm:justify-center sm:px-4 lg:px-0"
+    class="mx-auto mb-16 grid max-w-[1200px] grid-cols-1 gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3"
   >
     {
       types.map((type) => (
-        <button
-          class={`filter-btn ${type.category === 'all' ? 'filter-btn-active' : ''} rounded-full border border-[#3d3d3d] bg-transparent px-4 py-2 text-[14px] font-[MiSans-Medium] text-[#e6e6e6] transition-colors whitespace-nowrap`}
+        <div
+          class="filter-card group relative flex cursor-pointer flex-col items-center overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.04)] bg-[rgba(10,10,20,0.92)] p-8 shadow-[0_18px_45px_rgba(0,0,0,0.65)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-1"
           data-type={type.category}
+          style={`--card-color: ${type.color}`}
         >
-          {type.name}
-        </button>
+          <div class="icon-wrapper mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[rgba(255,255,255,0.02)] shadow-[0_0_40px_rgba(0,0,0,0.85)]">
+            <i
+              class={`${type.icon} text-[32px] text-[var(--text-sub)] transition-colors duration-300`}
+            />
+          </div>
+
+          <div class="mb-4 text-center text-[18px] font-[MiSans-Bold] text-white">{type.name}</div>
+
+          <div class="flex flex-wrap justify-center gap-2">
+            {type.tags.map((tag) => (
+              <span class="rounded-full bg-[rgba(255,255,255,0.04)] px-3 py-1 text-[12px] text-[var(--text-sub)]">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
       ))
     }
   </section>
@@ -56,7 +61,7 @@ import { tools, types } from "../data/tools.js";
           category={tool.category}
         >
           <div slot="icon">
-            {tool.iconType === "icon" ? (
+            {tool.iconType === 'icon' ? (
               <i class={tool.iconContent} />
             ) : (
               <span style={tool.iconStyle}>{tool.iconContent}</span>
@@ -66,75 +71,86 @@ import { tools, types } from "../data/tools.js";
       ))
     }
   </main>
+
+  <style>
+    .filter-card::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--card-color), transparent 0%),
+        color-mix(in srgb, var(--card-color), transparent 40%),
+        transparent
+      );
+      opacity: 0.9;
+    }
+
+    .filter-card:hover,
+    .filter-card.active {
+      box-shadow: 0 22px 55px -26px color-mix(in srgb, var(--card-color), transparent 70%);
+      border-color: color-mix(in srgb, var(--card-color), transparent 55%);
+    }
+
+    .filter-card:hover .icon-wrapper,
+    .filter-card.active .icon-wrapper {
+      box-shadow: 0 0 32px color-mix(in srgb, var(--card-color), transparent 55%);
+    }
+
+    .filter-card:hover i,
+    .filter-card.active i {
+      color: var(--card-color);
+    }
+  </style>
 </Layout>
 
 <script>
-  if (typeof window !== "undefined") {
-    window.addEventListener("DOMContentLoaded", () => {
-      const filterBtns = document.querySelectorAll(".filter-btn");
-      const cards = document.querySelectorAll(".card");
+  import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
+  import '@shoelace-style/shoelace';
 
-      const resetButtonStyles = () => {
-        filterBtns.forEach((b) => {
-          b.classList.remove("filter-btn-active");
-          b.classList.remove(
-            "filter-btn-image",
-            "filter-btn-text",
-            "filter-btn-video",
-            "filter-btn-audio",
-            "filter-btn-code",
-            "filter-btn-3d"
-          );
-        });
-      };
+  setBasePath('/shoelace-assets/');
 
-      filterBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          resetButtonStyles();
-          const type = btn.getAttribute("data-type");
+  window.addEventListener('DOMContentLoaded', () => {
+    const filterCards = document.querySelectorAll('.filter-card');
+    const cards = document.querySelectorAll('.card');
 
-          if (!type || type === 'all') {
-            btn.classList.add("filter-btn-active");
+    // Optional: Activate "anyway" (All) by default
+    const defaultCard = document.querySelector('.filter-card[data-type="anyway"]');
+    if (defaultCard) defaultCard.classList.add('active');
+
+    filterCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        // Reset active state
+        filterCards.forEach((c) => c.classList.remove('active'));
+        // Set active state
+        card.classList.add('active');
+
+        const type = card.getAttribute('data-type');
+
+        cards.forEach((toolCard) => {
+          const category = toolCard.getAttribute('data-category');
+          // Treat 'anyway' as 'all'
+          if (!type || type === 'anyway' || category === type) {
+            toolCard.style.display = 'flex';
           } else {
-            const map = {
-              image: "filter-btn-image",
-              text: "filter-btn-text",
-              video: "filter-btn-video",
-              audio: "filter-btn-audio",
-              code: "filter-btn-code",
-              "3d": "filter-btn-3d",
-            };
-            const cls = map[type as keyof typeof map];
-            if (cls) btn.classList.add(cls);
+            toolCard.style.display = 'none';
+            toolCard.classList.remove('card-selected');
           }
-
-          cards.forEach((card) => {
-            const category = card.getAttribute("data-category");
-            if (!type || type === 'all' || category === type) {
-              (card as HTMLElement).style.display = "flex";
-            } else {
-              (card as HTMLElement).style.display = "none";
-              card.classList.remove("card-selected");
-            }
-          });
-        });
-      });
-
-      // Card selected state
-      cards.forEach((card) => {
-        card.addEventListener("click", (e) => {
-          const target = e.target;
-          // If clicking the visit button, do not change selection
-          if (
-            target instanceof HTMLAnchorElement &&
-            target.classList.contains("visit-btn")
-          ) {
-            return;
-          }
-          cards.forEach((c) => c.classList.remove("card-selected"));
-          card.classList.add("card-selected");
         });
       });
     });
-  }
+
+    cards.forEach((card) => {
+      card.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target instanceof Element && target.closest('.visit-btn')) {
+          return;
+        }
+        cards.forEach((c) => c.classList.remove('card-selected'));
+        card.classList.add('card-selected');
+      });
+    });
+  });
 </script>

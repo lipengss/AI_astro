@@ -1,24 +1,29 @@
 ---
-import Header from '../components/Header.astro'
-import '../styles/global.css'
+import Header from "../components/Header.astro";
+import "../styles/global.css";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>AI Hub - Discover Top AI Tools</title>
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
-	</head>
-	<body class="m-0 box-border flex min-h-screen w-full flex-col overflow-x-hidden text-[var(--text-main)] font-[MiSans-Regular]">
-		<div class="mx-auto flex w-full max-w-[1920px] flex-1 flex-col">
-			<Header />
-			<main class="mt-[60px] flex-1">
-				<slot />
-			</main>
-		</div>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>AI Hub - Discover Top AI Tools</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="m-0 box-border flex min-h-screen w-full flex-col overflow-x-hidden text-[var(--text-main)] font-[MiSans-Regular]"
+  >
+    <div class="mx-auto flex w-full max-w-[1920px] flex-1 flex-col">
+      <Header />
+      <main class="mt-[60px] flex-1">
+        <slot />
+      </main>
+    </div>
+  </body>
 </html>

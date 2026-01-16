@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Hub - AI Tool Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'MiSans';
+            src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'MiSans';
+            src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Semibold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'MiSans';
+            src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        :root {
+            --bg-dark: #000000;
+            --card-bg: rgba(22, 22, 22, 0.85);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-sub: #e6e6e6;
+            --text-muted: #8a8a8a;
+            
+            --accent-blue: #27a7f5;
+            --accent-green: #27f583;
+            --accent-purple: #a267f5;
+            --accent-pink: #e91e63;
+            --accent-orange: #ff9800;
+            --accent-yellow: #ffca28;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1920px;
+            margin: 0 auto;
+            font-family: 'MiSans', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, #0a1628 0%, transparent 40%),
+                radial-gradient(circle at 90% 10%, #1e293b 0%, transparent 40%),
+                radial-gradient(circle at 30% 60%, #2d3748 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, #0d1a26 0%, transparent 40%),
+                linear-gradient(135deg, #0a1628 0%, #000000 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 1920px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            background: rgba(10, 22, 40, 0.7);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #fff, #27a7f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: var(--text-main);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background: var(--accent-blue);
+            box-shadow: 0 0 8px var(--accent-blue);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-icon:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 100px;
+            text-align: center;
+            padding-bottom: 60px;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--text-sub);
+            margin-bottom: 60px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* Entry Grid (6 tasks) */
+        .entry-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            padding: 0 20px;
+        }
+
+        .entry-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 8px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .entry-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255,255,255,0.03), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .entry-card:hover::before {
+            opacity: 1;
+        }
+
+        .entry-card:hover {
+            transform: translateY(-4px);
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .entry-icon {
+            font-size: 32px;
+            color: var(--text-sub);
+            transition: color 0.3s;
+        }
+
+        .entry-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .entry-pill {
+            margin-left: auto;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        /* Specific Hover Glows for Entry Cards */
+        .entry-card[data-type="write"]:hover { box-shadow: 0 8px 24px -6px rgba(39, 167, 245, 0.25); border-color: rgba(39, 167, 245, 0.3); }
+        .entry-card[data-type="write"] .entry-icon { color: var(--accent-blue); }
+        .entry-card[data-type="write"] .entry-pill { background-color: var(--accent-blue); color: var(--accent-blue); }
+
+        .entry-card[data-type="image"]:hover { box-shadow: 0 8px 24px -6px rgba(39, 245, 131, 0.25); border-color: rgba(39, 245, 131, 0.3); }
+        .entry-card[data-type="image"] .entry-icon { color: var(--accent-green); }
+        .entry-card[data-type="image"] .entry-pill { background-color: var(--accent-green); color: var(--accent-green); }
+
+        .entry-card[data-type="video"]:hover { box-shadow: 0 8px 24px -6px rgba(162, 103, 245, 0.25); border-color: rgba(162, 103, 245, 0.3); }
+        .entry-card[data-type="video"] .entry-icon { color: var(--accent-purple); }
+        .entry-card[data-type="video"] .entry-pill { background-color: var(--accent-purple); color: var(--accent-purple); }
+
+        .entry-card[data-type="music"]:hover { box-shadow: 0 8px 24px -6px rgba(233, 30, 99, 0.25); border-color: rgba(233, 30, 99, 0.3); }
+        .entry-card[data-type="music"] .entry-icon { color: var(--accent-pink); }
+        .entry-card[data-type="music"] .entry-pill { background-color: var(--accent-pink); color: var(--accent-pink); }
+
+        .entry-card[data-type="efficiency"]:hover { box-shadow: 0 8px 24px -6px rgba(255, 152, 0, 0.25); border-color: rgba(255, 152, 0, 0.3); }
+        .entry-card[data-type="efficiency"] .entry-icon { color: var(--accent-orange); }
+        .entry-card[data-type="efficiency"] .entry-pill { background-color: var(--accent-orange); color: var(--accent-orange); }
+
+        .entry-card[data-type="unknown"]:hover { box-shadow: 0 8px 24px -6px rgba(255, 202, 40, 0.25); border-color: rgba(255, 202, 40, 0.3); }
+        .entry-card[data-type="unknown"] .entry-icon { color: var(--accent-yellow); }
+        .entry-card[data-type="unknown"] .entry-pill { background-color: var(--accent-yellow); color: var(--accent-yellow); }
+
+        /* Tools Grid Section */
+        .tools-section {
+            padding: 80px 0 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            padding: 0 40px;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 8px;
+            padding: 40px 32px;
+            border: 1px solid var(--card-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: currentColor;
+            opacity: 0.6;
+            transition: height 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            background: rgba(30, 30, 30, 0.95);
+        }
+
+        .tool-card:hover::after {
+            height: 4px;
+            opacity: 1;
+        }
+
+        .tool-icon-wrapper {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+            transition: background 0.3s;
+        }
+
+        .tool-card:hover .tool-icon-wrapper {
+            background: rgba(255,255,255,0.06);
+        }
+
+        .tool-icon {
+            font-size: 64px;
+            color: var(--text-sub);
+            transition: color 0.3s;
+            font-weight: 100;
+        }
+
+        .tool-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 24px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .tag-pill {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-sub);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover .tag-pill {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        /* Specific styles for tool cards */
+        .tool-card.blue { color: var(--accent-blue); }
+        .tool-card.blue:hover { box-shadow: 0 12px 30px -10px rgba(39, 167, 245, 0.15); border-color: rgba(39, 167, 245, 0.2); }
+        .tool-card.blue:hover .tool-icon { color: var(--accent-blue); }
+
+        .tool-card.green { color: var(--accent-green); }
+        .tool-card.green:hover { box-shadow: 0 12px 30px -10px rgba(39, 245, 131, 0.15); border-color: rgba(39, 245, 131, 0.2); }
+        .tool-card.green:hover .tool-icon { color: var(--accent-green); }
+
+        .tool-card.purple { color: var(--accent-purple); }
+        .tool-card.purple:hover { box-shadow: 0 12px 30px -10px rgba(162, 103, 245, 0.15); border-color: rgba(162, 103, 245, 0.2); }
+        .tool-card.purple:hover .tool-icon { color: var(--accent-purple); }
+
+        .tool-card.pink { color: var(--accent-pink); }
+        .tool-card.pink:hover { box-shadow: 0 12px 30px -10px rgba(233, 30, 99, 0.15); border-color: rgba(233, 30, 99, 0.2); }
+        .tool-card.pink:hover .tool-icon { color: var(--accent-pink); }
+
+        .tool-card.orange { color: var(--accent-orange); }
+        .tool-card.orange:hover { box-shadow: 0 12px 30px -10px rgba(255, 152, 0, 0.15); border-color: rgba(255, 152, 0, 0.2); }
+        .tool-card.orange:hover .tool-icon { color: var(--accent-orange); }
+
+        .tool-card.yellow { color: var(--accent-yellow); }
+        .tool-card.yellow:hover { box-shadow: 0 12px 30px -10px rgba(255, 202, 40, 0.15); border-color: rgba(255, 202, 40, 0.2); }
+        .tool-card.yellow:hover .tool-icon { color: var(--accent-yellow); }
+
+        /* Floating particles for atmosphere */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .p1 { width: 400px; height: 400px; background: #0a1628; top: -100px; left: -100px; animation-delay: 0s; }
+        .p2 { width: 300px; height: 300px; background: #1e293b; top: 40%; right: -50px; animation-delay: -5s; }
+        .p3 { width: 500px; height: 500px; background: #0d1a26; bottom: -100px; left: 20%; animation-delay: -10s; }
+        .p4 { width: 200px; height: 200px; background: #27a7f5; top: 20%; left: 60%; opacity: 0.1; filter: blur(80px); }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">AI Hub</div>
+        <div class="nav-links">
+            <a href="#" class="nav-link active">工具库</a>
+            <a href="#" class="nav-link">分类</a>
+            <a href="#" class="nav-link">社区</a>
+            <a href="#" class="nav-link">关于</a>
+        </div>
+        <div class="nav-actions">
+            <i class="ri-search-line nav-icon"></i>
+            <i class="ri-notification-3-line nav-icon"></i>
+            <i class="ri-user-smile-line nav-icon"></i>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="hero-title">用 AI，少干活，快出结果</h1>
+        <p class="hero-subtitle">按你要做的事，直接找到最合适的 AI</p>
+
+        <!-- Entry Grid -->
+        <div class="entry-container">
+            <div class="entry-card" data-type="write">
+                <i class="ri-edit-circle-line entry-icon"></i>
+                <span class="entry-text">写点东西</span>
+                <div class="entry-pill"></div>
+            </div>
+            
+            <div class="entry-card" data-type="image">
+                <i class="ri-palette-line entry-icon"></i>
+                <span class="entry-text">做图</span>
+                <div class="entry-pill"></div>
+            </div>
+            
+            <div class="entry-card" data-type="video">
+                <i class="ri-movie-line entry-icon"></i>
+                <span class="entry-text">做视频</span>
+                <div class="entry-pill"></div>
+            </div>
+            
+            <div class="entry-card" data-type="music">
+                <i class="ri-music-2-line entry-icon"></i>
+                <span class="entry-text">做音乐或配音</span>
+                <div class="entry-pill"></div>
+            </div>
+            
+            <div class="entry-card" data-type="efficiency">
+                <i class="ri-rocket-line entry-icon"></i>
+                <span class="entry-text">提高效率</span>
+                <div class="entry-pill"></div>
+            </div>
+            
+            <div class="entry-card" data-type="unknown">
+                <i class="ri-compass-3-line entry-icon"></i>
+                <span class="entry-text">我不知道该用哪个</span>
+                <div class="entry-pill"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Grid Section -->
+    <section class="tools-section">
+        <div class="tools-grid">
+            <!-- Write -->
+            <div class="tool-card blue">
+                <div class="tool-icon-wrapper">
+                    <i class="ri-edit-circle-line tool-icon"></i>
+                </div>
+                <h3 class="tool-title">写点东西</h3>
+                <div class="tags-container">
+                    <span class="tag-pill">文案</span>
+                    <span class="tag-pill">报告</span>
+                    <span class="tag-pill">邮件</span>
+                    <span class="tag-pill">脑暴</span>
+                </div>
+            </div>
+
+            <!-- Image -->
+            <div class="tool-card green">
+                <div class="tool-icon-wrapper">
+                    <i class="ri-palette-line tool-icon"></i>
+                </div>
+                <h3 class="tool-title">做图</h3>
+                <div class="tags-container">
+                    <span class="tag-pill">插画</span>
+                    <span class="tag-pill">海报</span>
+                    <span class="tag-pill">UI</span>
+                    <span class="tag-pill">概念图</span>
+                </div>
+            </div>
+
+            <!-- Video -->
+            <div class="tool-card purple">
+                <div class="tool-icon-wrapper">
+                    <i class="ri-movie-line tool-icon"></i>
+                </div>
+                <h3 class="tool-title">做视频</h3>
+                <div class="tags-container">
+                    <span class="tag-pill">文生视频</span>
+                    <span class="tag-pill">剪辑</span>
+                    <span class="tag-pill">风格化</span>
+                </div>
+            </div>
+
+            <!-- Music -->
+            <div class="tool-card pink">
+                <div class="tool-icon-wrapper">
+                    <i class="ri-music-2-line tool-icon"></i>
+                </div>
+                <h3 class="tool-title">做音乐或配音</h3>
+                <div class="tags-container">
+                    <span class="tag-pill">人声</span>
+                    <span class="tag-pill">BGM</span>
+                    <span class="tag-pill">配音</span>
+                </div>
+            </div>
+
+            <!-- Efficiency -->
+            <div class="tool-card orange">
+                <div class="tool-icon-wrapper">
+                    <i class="ri-settings-4-line tool-icon"></i>
+                </div>
+                <h3 class="tool-title">提高效率</h3>
+                <div class="tags-container">
+                    <span class="tag-pill">总结</span>
+                    <span class="tag-pill">规划</span>
+                    <span class="tag-pill">自动化</span>
+                </div>
+            </div>
+
+            <!-- Unknown -->
+            <div class="tool-card yellow">
+                <div class="tool-icon-wrapper">
+                    <i class="ri-question-mark tool-icon"></i>
+                </div>
+                <h3 class="tool-title">我不知道该用哪个</h3>
+                <div class="tags-container">
+                    <span class="tag-pill">带我选</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

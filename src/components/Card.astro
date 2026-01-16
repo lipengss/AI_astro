@@ -1,48 +1,85 @@
 ---
 interface Props {
-	name: string;
-	tag: string;
-	tagClass: string;
-	desc: string;
-	iconClass: string;
-	features: { icon: string; title?: string }[];
-	category: string;
+  name: string;
+  tag: string;
+  tagClass: string;
+  desc: string;
+  iconClass: string;
+  features: { icon: string; title?: string }[];
+  category: string;
 }
 
 const { name, tag, tagClass, desc, iconClass, features, category } = Astro.props;
 ---
 
 <div
-	class="card group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border border-transparent bg-[var(--card-bg)] backdrop-blur p-6 transition-transform duration-300 hover:-translate-y-2 hover:border-[rgba(10,22,40,1)] hover:shadow-[0_16px_32px_rgba(0,0,0,0.4)] max-sm:p-4"
-	data-category={category}
+  class="card group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border border-transparent bg-[var(--card-bg)] backdrop-blur p-6 transition-transform duration-300 hover:-translate-y-2 hover:shadow-[0_16px_32px_rgba(0,0,0,0.4)] max-sm:p-4"
+  data-category={category}
 >
-	<div class="mb-4 flex gap-4 max-sm:mb-3 max-sm:gap-3">
-		<div class={`tool-icon ${iconClass} flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[10px] text-2xl font-bold text-white max-sm:h-10 max-sm:w-10 max-sm:text-xl`}>
-			<slot name="icon" />
-		</div>
-		<div class="flex flex-1 flex-col justify-center">
-			<div class="tool-name mb-1 text-[18px] leading-tight text-[var(--text-main)] font-[MiSans-Bold] max-sm:text-[16px]">
-				{name}
-			</div>
-			<span class={`tag ${tagClass} inline-flex w-fit items-center rounded-2xl px-2.5 py-1 text-[12px] font-[MiSans-Medium] uppercase`}>
-				{tag}
-			</span>
-		</div>
-	</div>
-	<div class="tool-desc mb-6 flex-grow text-[14px] leading-relaxed text-[var(--text-sub)] max-sm:mb-4 max-sm:text-[13px]">
-		{desc}
-	</div>
-	<div class="card-footer flex items-center justify-between border-t border-[#3d3d3d] pt-4">
-		<div class="features flex gap-3 text-[#666666]">
-			{features.map((feature) => (
-				<i class={feature.icon + " text-[16px] transition-colors group-hover:text-[#999999] max-sm:text-[15px]"} title={feature.title}></i>
-			))}
-		</div>
-		<a
-			href="#"
-			class="visit-btn inline-block rounded-2xl border border-[var(--accent-green)] px-4 py-1.5 text-[13px] font-[MiSans-Medium] text-[var(--accent-green)] transition-colors hover:bg-[var(--accent-green)] hover:text-black max-sm:px-3 max-sm:py-1 max-sm:text-[12px]"
-		>
-			访问
-		</a>
-	</div>
+  <div class="flex items-center gap-4 max-sm:mb-2 max-sm:gap-3 mb-3">
+    <div
+      class={`tool-icon ${iconClass} flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[10px] text-2xl font-bold text-white max-sm:h-10 max-sm:w-10 max-sm:text-xl`}
+    >
+      <slot name="icon" />
+    </div>
+    <div class="flex flex-1 flex-col justify-center">
+      <div
+        class="tool-name mb-1 text-[18px] leading-tight text-[var(--text-main)] font-[MiSans-Bold] max-sm:text-[16px]"
+      >
+        {name}
+      </div>
+      <span
+        class={`tag ${tagClass} inline-flex w-fit items-center rounded-2xl px-2.5 py-1 text-[12px] font-[MiSans-Medium] uppercase`}
+      >
+        {tag}
+      </span>
+    </div>
+  </div>
+
+  <sl-tooltip content={desc} class="desc-tooltip" disabled>
+    <div
+      class="tool-desc line-clamp-2 flex-grow text-[14px] leading-relaxed text-[var(--text-sub)] max-sm:mb-4 max-sm:text-[13px]"
+    >
+      {desc}
+    </div>
+  </sl-tooltip>
+
+  <div class="card-footer">
+    <div class="mb-4 features flex gap-3 text-[#666666]">
+      {
+        features.map((feature) => (
+          <sl-tag size="small" variant="text" pill>
+            {feature.title}
+          </sl-tag>
+        ))
+      }
+    </div>
+    <sl-button class="visit-btn w-full" variant="success" size="small" outline>
+      访问官网
+    </sl-button>
+  </div>
 </div>
+
+<script>
+  const updateTooltips = () => {
+    document.querySelectorAll('.desc-tooltip').forEach((el) => {
+      // @ts-ignore
+      const tooltip = el;
+      const desc = tooltip.querySelector('.tool-desc');
+      if (desc && desc.scrollHeight > desc.clientHeight) {
+        tooltip.disabled = false;
+      } else {
+        tooltip.disabled = true;
+      }
+    });
+  };
+
+  // Run on load, resize, and when Shoelace is ready
+  window.addEventListener('load', updateTooltips);
+  window.addEventListener('resize', updateTooltips);
+
+  // Also check periodically or after custom elements upgrade
+  if (customElements) {
+    customElements.whenDefined('sl-tooltip').then(updateTooltips);
+  }
+</script>
